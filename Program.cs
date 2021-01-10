@@ -13,6 +13,7 @@ namespace Blackjack
       {
         var game = new Game();
         game.Play();
+        Console.WriteLine("\nYou are out of chips. Bye bye.");
         Console.WriteLine("\nPress any key to exit. Press enter to play again.");
         quit = Console.ReadLine();
       }
