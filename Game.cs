@@ -41,7 +41,7 @@ namespace Blackjack
         {
           Console.WriteLine("Bust - You lose.");
           Player.LoseBet();
-          break;
+          break; // FIXME - Doesn't break the loop
         }
 
         Console.WriteLine("Do you want to [h]it or [s]tand?");
@@ -96,7 +96,8 @@ namespace Blackjack
       }
 
       // Log chips
-      Console.WriteLine($"Player chips: {Player.Chips}");
+      Console.WriteLine($"Player chips: {Player.Chips.Value}");
 
     }
   }
+}
