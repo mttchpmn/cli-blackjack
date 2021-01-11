@@ -5,105 +5,98 @@ namespace Blackjack
 {
   class Game
   {
-    private Deck deck;
-    public bool PlayerBust { get; private set; }
-    public bool PlayerTurnComplete { get; private set; }
-    public bool DealerBust { get; private set; }
-    public bool DealerTurnComplete { get; private set; }
-    public int PlayerScore { get; private set; }
-    public int DealerScore { get; private set; }
+    private Deck Deck { get; }
+    private Player Player { get; }
+    private Dealer Dealer { get; }
 
     public Game()
     {
-      this.PlayerBust = false;
-      this.PlayerScore = 0;
-      this.DealerScore = 0;
-
-      this.deck = new Deck();
+      Deck = new Deck();
+      Player = new Player(Deck, 200);
+      Dealer = new Dealer(Deck);
     }
 
     public void Play()
     {
       Console.WriteLine("Game starting...");
-      this.DealToDealer(deck.Deal());
-      this.PlayerLoop();
-      if (!this.PlayerBust) this.DealerLoop();
 
-      this.CheckWinner();
-    }
+      // Make bet
+      Console.WriteLine("Enter your bet:");
+      string input = Console.ReadLine();
+      Player.MakeBet(Int32.Parse(input));
 
-    private void CheckWinner()
-    {
-      if (this.PlayerBust)
+      // Deal cards
+      Player.Hand.AddToHand(Deck.Deal(2));
+      Dealer.Hand.AddToHand(Deck.Deal(1));
+
+      // Show Dealer hand
+      Console.WriteLine($"The Dealer has {Dealer.Score}");
+
+      // Loop for Player
+      while (!Player.IsTurnComplete)
       {
-        Console.WriteLine("Bust - you lose.");
+        Console.WriteLine($"Your score is {Player.Score}");
+
+        if (Player.IsBust)
+        {
+          Console.WriteLine("Bust - You lose.");
+          Player.LoseBet();
+          break;
+        }
+
+        Console.WriteLine("Do you want to [h]it or [s]tand?");
+        var ans = Console.ReadLine();
+        if (ans == "h")
+        {
+          Player.Hit();
+        }
+        else
+        {
+          Player.Stand();
+        }
       }
-      else if (this.DealerBust)
+      Console.WriteLine($"You stand on {Player.Score}");
+
+      // Loop for Dealer
+      while (!Dealer.IsTurnComplete)
       {
-        Console.WriteLine("Dealer Bust - You win!");
+        Console.WriteLine($"The Dealer has {Dealer.Score}");
+
+        if (Dealer.IsBust)
+        {
+          Console.WriteLine("Dealer bust - you win!");
+          Player.WinBet();
+          break;
+        }
+
+        if (Dealer.Score < 17)
+        {
+          Dealer.Hit();
+        }
+        else
+        {
+          Dealer.Stand();
+        }
+      }
+
+      // Evaluate Winner
+      if (Player.Score > Dealer.Score)
+      {
+        Console.WriteLine($"Your score of {Player.Score} beats the Dealer's {Dealer.Score} - You win!");
+        Player.WinBet();
+      }
+      else if (Dealer.Score == Player.Score)
+      {
+        Console.WriteLine("Push!");
       }
       else
       {
-        int playerOffset = 21 - this.PlayerScore;
-        int dealerOffset = 21 - this.DealerScore;
-
-        string winner = (playerOffset < dealerOffset) ? "You win!" : "You lose.";
-
-        Console.WriteLine(winner);
-      }
-    }
-
-    private void PlayerLoop()
-    {
-      DealToPlayer(this.deck.Deal(2));
-      CheckPlayerMove();
-      while (!this.PlayerTurnComplete)
-      {
-        DealToPlayer(deck.Deal(1));
-        if (this.PlayerScore > 21)
-        {
-          this.PlayerTurnComplete = true;
-          this.PlayerBust = true;
-          break;
-        }
-        CheckPlayerMove();
+        Console.WriteLine($"The Dealer's score of {Dealer.Score} beats your {Player.Score} - You lose.");
+        Player.LoseBet();
       }
 
-    }
+      // Log chips
+      Console.WriteLine($"Player chips: {Player.Chips}");
 
-    private void DealerLoop()
-    {
-      while (this.DealerScore < 17) this.DealToDealer(deck.Deal());
-      if (this.DealerScore > 21) this.DealerBust = true;
-    }
-
-    private void DealToPlayer(List<Card> deal)
-    {
-      foreach (Card card in deal)
-      {
-        Console.WriteLine($"You are dealt a {card}");
-        this.PlayerScore += card.Value;
-      }
-      Console.WriteLine($"Your score is: {this.PlayerScore}");
-    }
-
-    private void DealToDealer(Card deal)
-    {
-      Console.WriteLine($"The dealer is dealt a {deal}");
-      this.DealerScore += deal.Value;
-      Console.WriteLine($"The dealer score is {this.DealerScore}");
-    }
-
-    private void CheckPlayerMove()
-    {
-      string ans = "";
-
-      while (ans != "h" && ans != "s")
-      {
-        Console.WriteLine("Press h to hit, s to stand");
-        ans = Console.ReadLine();
-      }
-      if (ans == "s") this.PlayerTurnComplete = true;
     }
   }
-}

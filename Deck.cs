@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace Blackjack
@@ -7,11 +6,9 @@ namespace Blackjack
   class Deck
   {
     public List<Card> CardsInDeck { get; private set; }
-    public List<Card> CardsDealt { get; private set; }
     public Deck()
     {
       this.CardsInDeck = Deck.BuildDeck();
-      this.CardsDealt = new List<Card>();
       this.Shuffle();
     }
     private static List<Card> BuildDeck()
@@ -45,8 +42,8 @@ namespace Blackjack
 
     public void Reset()
     {
-      this.CardsDealt = new List<Card>();
       this.CardsInDeck = Deck.BuildDeck();
+      this.Shuffle();
     }
 
     // Shuffle Deck using Fisher-Yates Algorithm
@@ -66,16 +63,11 @@ namespace Blackjack
         deck[n] = val;
       }
     }
-    public Card Deal()
-    {
-      return this.Deal(1)[0];
-    }
-    public List<Card> Deal(int numToDeal)
+    public List<Card> Deal(int numToDeal = 1)
     {
       int idx = this.CardsInDeck.Count - 1 - numToDeal;
       var cardsToDeal = this.CardsInDeck.GetRange(idx, numToDeal);
       this.CardsInDeck.RemoveRange(idx, numToDeal);
-      this.CardsDealt.AddRange(cardsToDeal);
 
       return cardsToDeal;
     }
