@@ -1,0 +1,15 @@
+Bugs / Features:
+- Handle running out of chips
+- Validate bet amount before making it
+- Improve UI / User feedback
+- Unit tests
+- Show game counter
+- Show wins / losses
+- Move class objects to folders
+
+Game Features to implement:
+- Handle Aces (1 / 11)
+- Double down
+- Insurance
+- Split
+- Blackjack (dealer and player)

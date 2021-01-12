@@ -27,14 +27,6 @@ namespace Blackjack
     {
       Console.WriteLine("\nGame starting...");
 
-      // TODO - Handle running out of chips
-      // TODO - Validate bet amount before making it
-      // TODO - Improve UI / User feedback
-      // TODO - Unit tests
-      // TODO - Show game counter
-      // TODO - Show wins / losses
-      // TODO - Move class objects to folders
-
       // Make bet
       Console.WriteLine($"Your chips: {Player.Chips.Value}");
       Console.WriteLine("Enter your bet:");
