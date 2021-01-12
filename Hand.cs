@@ -6,7 +6,7 @@ namespace Blackjack
 {
   class Hand
   {
-    private List<Card> Cards { get; }
+    public List<Card> Cards { get; private set; }
 
     public Hand()
     {
@@ -20,8 +20,12 @@ namespace Blackjack
 
     public int GetValue()
     {
-      // return 1000;
       return Cards.Sum(x => x.Value);
+    }
+
+    public void Discard()
+    {
+      this.Cards.Clear();
     }
 
   }

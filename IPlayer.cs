@@ -12,5 +12,7 @@ namespace Blackjack
     void Hit();
 
     void Stand();
+
+    void Reset();
   }
 }

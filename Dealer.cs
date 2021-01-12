@@ -28,5 +28,12 @@ namespace Blackjack
     {
       this.IsTurnComplete = true;
     }
+
+    public void Reset()
+    {
+      this.IsTurnComplete = false;
+      this.IsBust = false;
+      this.Hand.Discard();
+    }
   }
 }

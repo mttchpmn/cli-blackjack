@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Blackjack
 {
@@ -41,19 +40,28 @@ namespace Blackjack
 
     public void MakeBet(int amount)
     {
+      // TODO - This could be moved to the setter
       this.Bet = amount;
     }
 
     public void WinBet()
     {
-      this.Bet = 0;
       this.Chips.Increase(this.Bet * 2);
+      this.Bet = 0;
     }
 
     public void LoseBet()
     {
-      this.Bet = 0;
       this.Chips.Decrease(this.Bet);
+      this.Bet = 0;
     }
+
+    public void Reset()
+    {
+      this.Hand.Discard();
+      this.IsBust = false;
+      this.IsTurnComplete = false;
+    }
+
   }
 }

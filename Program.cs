@@ -9,15 +9,19 @@ namespace Blackjack
       Console.WriteLine("----------|  WELCOME TO BLACKJACK  |----------");
 
       string quit = "";
-      do
+      // do
+      // {
+      var game = new Game();
+      while (true)
       {
-        var game = new Game();
         game.Play();
-        // Console.WriteLine("\nYou are out of chips. Bye bye.");
-        Console.WriteLine("\nPress any key to exit. Press enter to play again.");
-        quit = Console.ReadLine();
+        game.Reset();
       }
-      while (String.IsNullOrEmpty(quit));
+      // Console.WriteLine("\nYou are out of chips. Bye bye.");
+      // Console.WriteLine("\nPress any key to exit. Press enter to play again.");
+      // quit = Console.ReadLine();
     }
+    // while (String.IsNullOrEmpty(quit));
   }
 }
+// }
